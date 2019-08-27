@@ -11,7 +11,8 @@ export default (state = initialState, action) => {
         };
         case 'RELEASE_POKEMON':
         return {
-            pokemon: state.pokemon.splice(action, 1)
+            ...state,
+            pokemon: [...state.pokemon.slice(0, action.index), ...state.pokemon.slice(action.index + 1)]
         }
         default: return state;
     }

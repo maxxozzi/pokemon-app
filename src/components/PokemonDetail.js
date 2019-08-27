@@ -55,7 +55,12 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
         width: 200,
-        color: '#fff'
+    },
+    inputField: {
+        color: '#fff',
+    },
+    labelField: {
+        color: '#95a5a6',
     },
     fab: {
         margin: theme.spacing(1),
@@ -105,16 +110,20 @@ export default function PokemonDetail() {
         setOpenAlert(!openAlert);
     }
 
-    function catchPokemon() {
+    async function catchPokemon() {
         let random = Math.random() >= 0.5;
         if (random === true) {
-            setInput(true);
-            setTitleAlert('Success');
-            setContentAlert('Pokémon succesfully caught');
+            await Promise.all([
+                setTitleAlert('Success'), 
+                setContentAlert('Pokémon succesfully caught'),
+                setInput(true)
+            ]);
             setOpenAlert(!openAlert);
         } else {
-            setTitleAlert('Fail');
-            setContentAlert('You fail to catch the Pokémon, please try again');
+            await Promise.all([
+                setTitleAlert('Fail'), 
+                setContentAlert('You fail to catch the Pokémon, please try again')
+            ]);
             setOpenAlert(!openAlert);
         }
     }
@@ -162,7 +171,7 @@ export default function PokemonDetail() {
                                     Catch It
                                 </Fab>
                             ) : (
-                                typeof (myPokemon.find(value => value.name === information.name)) === "undefined" ? 
+                                typeof (myPokemon.find(value => value.pokemon.name === information.name)) === "undefined" ? 
                                 (
                                     <Fab onClick={() => catchPokemon()} variant="extended" aria-label="Catch" className={classes.fab}>
                                         <img alt="Poke ball" src={Logo} style={{height: 30, marginRight: 5}} />
@@ -266,6 +275,8 @@ export default function PokemonDetail() {
                             <TextField
                                 label="Nickname"
                                 className={classes.textField}
+                                InputLabelProps={{className: classes.labelField}}
+                                InputProps={{className: classes.inputField}}
                                 value={nickname}
                                 onChange={(e) => setNickname(e.target.value)}
                                 margin="normal"

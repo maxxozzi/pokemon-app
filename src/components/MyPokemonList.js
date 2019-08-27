@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import Grid from '@material-ui/core/Grid';
+import React, {useState} from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -68,7 +67,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function PokemonList() {
     const [page, setPage] = useState(0);
-    const [list, setList] = useState([]);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [openAlert, setOpenAlert] = useState(false);
     const [index, setIndex] = useState(0);
@@ -101,10 +99,6 @@ export default function PokemonList() {
         setPage(0);
       }
 
-    useEffect(() => {
-        setList(myPokemon);
-      }, []);
-
     return (
         <div>
             <Typography variant="h2" component="h1" gutterBottom>
@@ -122,8 +116,8 @@ export default function PokemonList() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {list.length !== 0 ? (
-                                list.map((value, i) => (
+                            {myPokemon.length !== 0 ? (
+                                myPokemon.map((value, i) => (
                                     <StyledTableRow key={value.pokemon.name}>
                                         <TableCell component="th" scope="row">
                                         {(i + 1) + (page * rowsPerPage)}
@@ -146,7 +140,7 @@ export default function PokemonList() {
                                 <TablePagination
                                     rowsPerPageOptions={[5, 10, 25, 100]}
                                     colSpan={3}
-                                    count={list.length}
+                                    count={myPokemon.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}
                                     SelectProps={{
